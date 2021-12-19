@@ -14,6 +14,8 @@
         </thead>
         <tbody>
           <product-row
+            @up-down="upDown"
+            @delete-product="deleteProduct(key)"
             v-for="(product, key) in products"
             :key="key"
             :product="product"
@@ -53,13 +55,14 @@ export default {
           price: product.price,
         })
         .then((response) => (product.units = response.data.units))
-        .catch(error => store.addErrorMensage((error.statusText || error.message || error)));
+        .catch((error) => store.addErrorMensage(error.statusText || error.message || error));
     },
     deleteProduct(index) {
-      api
-        .delProduct(this.products[index].id)
-        .then(() => this.products.splice(index, 1))
-        .catch((error) => alert(error));
+      if (confirm("Seguro quires borrar el producto"))
+        api
+          .delProduct(this.products[index].id)
+          .then(() => this.products.splice(index, 1))
+          .catch((error) => store.addErrorMensage(error));
     },
   },
   mounted() {
@@ -77,8 +80,7 @@ export default {
           .reduce((total, prod) => total + prod.price * prod.units, 0)
           .toFixed(2);
       }
-
-      return 0.00;
+      return 0.0;
     },
   },
 };
