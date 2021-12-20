@@ -15,7 +15,8 @@
               type="text"
               class="form-control"
               id="newprod-name"
-              required v-model="nameProduct"
+              required
+              v-model="nameProduct"
             />
           </div>
           <div class="form-group">
@@ -41,7 +42,12 @@
               v-model.number="unitsProduct"
             />
           </div>
-          <button id="boton" type="submit" class="btn btn-default btn-primary" v-on:click.prevent="addProduct">
+          <button
+            id="boton"
+            type="submit"
+            class="btn btn-default btn-primary"
+            v-on:click.prevent="addProduct"
+          >
             Añadir
           </button>
           <button type="reset" class="btn btn-danger" id="show-table">
@@ -56,27 +62,36 @@
 
 <script>
 import { APIService } from "../service/Api";
-const api = new APIService
+import { store } from "./../service/store";
+
+const api = new APIService();
 export default {
   name: "form-product",
-  data(){
+  data() {
     return {
-      nameProduct:'',
-      priceProduct:'',
-      unitsProduct:''
-    }
+      nameProduct: "",
+      priceProduct: "",
+      unitsProduct: "",
+    };
   },
   methods: {
-    addProduct(){
-      if(this.nameProduct && this.priceProduct && this.unitsProduct )
-      api.addProduct({
-        units: this.unitsProduct,
-        price: this.priceProduct,
-        name: this.nameProduct
-      }).then(response => console.log(response)).
-      catch(error => alert(error))
-      
+    addProduct() {
+      if (this.nameProduct && this.priceProduct && this.unitsProduct)
+        api
+          .addProduct({
+            units: this.unitsProduct,
+            price: this.priceProduct,
+            name: this.nameProduct,
+          })
+          .then((response) => console.log(response) ,this.clearForm())
+          .catch((error) => store.addErrorMensage(error));
+        
+    },
+    clearForm(){
+      this.unitsProduct =''
+      this.priceProduct= ''
+      this.nameProduct=''
     }
-  }
+  },
 };
 </script>

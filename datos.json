@@ -17,6 +17,18 @@
       "name": "juan",
       "price": 0.03,
       "units": 0
+    },
+    {
+      "units": 2,
+      "price": 0.03,
+      "name": "juan",
+      "id": 4
+    },
+    {
+      "units": 4,
+      "price": 0.03,
+      "name": "peo",
+      "id": 5
     }
   ]
 }
